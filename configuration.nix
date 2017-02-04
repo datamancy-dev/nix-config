@@ -6,7 +6,7 @@
 
 let myUserOptions = 
 {
-  hashedPassword = "$6$Symhg7JQRnY$EJEJuk/1uGAtDH1HJlmkCE23tG5Hly56v0FxoWJTrsrdFfzsgNvZ7V/8kKy9t7gf7vX8Bt8X73pnYv9FzKOHP1";
+  hashedPassword = "$6$xKJWwJ7V7/xZ$Oi0IND8IGrdEtkgMRtkTlCT7qqllVornd.5GQVYh5esk/HosCniRqYJzChflGSfPEUqLy59ETzj.LRj9Tf1YQ.";
   extraGroups = ["wheel"]; isNormalUser   = true; }; in
 {
   nixpkgs.config = {
@@ -17,28 +17,31 @@ let myUserOptions =
       enablePepperFlash = true;
       enablePepperPDF   = true;
     };
-
-    firefox = {
-      enableGnomeExtensions = true;
-    };
   };
 
-  # Use the gummiboot efi boot loader.
+  # Use the grub boot loader.
   boot.loader = {
-    gummiboot.enable = true;
     efi.canTouchEfiVariables = true;
     grub.device = /dev/sda5;
+    gummiboot.enable = true;
   };
-networking.networkmanager.enable = true;  # Enable the network manager
+  networking.networkmanager.enable = true;  # Enable the network manager
 
   programs.zsh = {
     enable = true;
-    interactiveShellInit = (import ./zshrc);
+    interactiveShellInit = "source $LOCAL_CONFIG_DIR/zsh/init.zsh";
   };
 
-  environment.extraInit = ''
-    ZSH=/home/share/zsh/oh-my-zsh
-  '';
+  environment =
+  {
+    extraInit = (import ./environment-variables.sh);
+    shellAliases = { ca = "clear && "; # convenience
+                     sudo = "sudo "; # allows sudo'd commands to be aliases
+                     tmux = "tmux -2"; # force 256 colors in tmux
+		     tmux-8color = "tmux"; # allow less colors for extraordinary circumstances
+    };
+    shellInit = (import ./environment-variables.sh);
+  };
 
   services = {
     # openssh.enable = true;
@@ -46,8 +49,12 @@ networking.networkmanager.enable = true;  # Enable the network manager
     xserver = {
       enable = true;
       layout = "us";
+      desktopManager.kde5.enable = true;
       desktopManager.gnome3.enable = true;
-      displayManager.gdm.enable = true; # it doesn't recongize the right passwords?!?!
+
+      # I like gdm better, but can't find the option to change which
+      # environment it loads...
+      displayManager.kdm.enable = true; 
     };
   };
 
@@ -56,6 +63,7 @@ networking.networkmanager.enable = true;  # Enable the network manager
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      # the package list is long enough to justify putting it in a separate file
       ./packages.nix
     ];
 
@@ -74,13 +82,7 @@ networking.networkmanager.enable = true;  # Enable the network manager
     mutableUsers     = false;
 
     users = {
-      activism   = myUserOptions;
-      freelance  = myUserOptions;
-      hackerrank = myUserOptions;
-      llvm       = myUserOptions;
-      metasploit = myUserOptions;
-      personal   = myUserOptions;
-      wgu        = myUserOptions;
+      saffronsnail = myUserOptions;
 
       hab = {
         extraGroups = ["hab"];

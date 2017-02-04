@@ -1,5 +1,9 @@
 { config, pkgs, ... }:
 
+  let neovim = pkgs.neovim.override {
+    vimAlias = true;
+    configure = { customRC = "set rtp ^=$LOCAL_CONFIG_DIR/neovim | source $LOCAL_CONFIG_DIR/neovim/init.vim"; };
+  }; in
 {
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -10,13 +14,17 @@
     chromium
     clang
     clojure
+    cmake
     ctags
     erlang
     evince
     firefox
+    gazebo
     gcc
     gimp
     git
+    gnome3.gnome-calculator
+    gnucash
     gnumake
     gparted
     guile
@@ -26,17 +34,19 @@
     # metasploit
     mkpasswd
     ncurses
+    neovim
     nox
     npm2nix
     pavucontrol
+    pciutils
     qtcreator
     ruby
     rustc
     shutter
-    steam
+    #steam
     terminator
+    tmux
     unzip
-    (import ./vim.nix)
     wget
     wpa_supplicant
     zip

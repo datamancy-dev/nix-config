@@ -1,0 +1,4 @@
+# hardware-configuration contains system-specific settings from the results of a
+# scan that NixOs automatically performs on installation
+hardware-configuration.nix
+
