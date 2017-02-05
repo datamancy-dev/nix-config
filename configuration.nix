@@ -6,7 +6,7 @@
 
 let myUserOptions = 
 {
-  hashedPassword = "$6$xKJWwJ7V7/xZ$Oi0IND8IGrdEtkgMRtkTlCT7qqllVornd.5GQVYh5esk/HosCniRqYJzChflGSfPEUqLy59ETzj.LRj9Tf1YQ.";
+  hashedPassword = (import "/etc/nixos/password.txt");
   extraGroups = ["wheel"]; isNormalUser   = true; }; in
 {
   nixpkgs.config = {
@@ -49,12 +49,8 @@ let myUserOptions =
     xserver = {
       enable = true;
       layout = "us";
-      desktopManager.kde5.enable = true;
+      displayManager.gdm.enable = true; 
       desktopManager.gnome3.enable = true;
-
-      # I like gdm better, but can't find the option to change which
-      # environment it loads...
-      displayManager.kdm.enable = true; 
     };
   };
 

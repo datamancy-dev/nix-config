@@ -2,3 +2,6 @@
 # scan that NixOs automatically performs on installation
 hardware-configuration.nix
 
+# avoid uploading the password hash for security
+password.txt
+
