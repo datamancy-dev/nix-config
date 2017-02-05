@@ -28,6 +28,7 @@
     gnumake
     gparted
     guile
+    htop
     leiningen
     libreoffice
     manpages
