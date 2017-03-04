@@ -17,13 +17,18 @@ let myUserOptions =
       enablePepperFlash = true;
       enablePepperPDF   = true;
     };
+
+    firefox = {
+      enableGoogleTalkPlugin = true;
+      enableAdobeFlash       = true;
+    };
   };
 
   # Use the grub boot loader.
   boot.loader = {
     efi.canTouchEfiVariables = true;
     grub.device = /dev/sda5;
-    gummiboot.enable = true;
+    systemd-boot.enable = true;
   };
   networking.networkmanager.enable = true;  # Enable the network manager
 
@@ -35,10 +40,14 @@ let myUserOptions =
   environment =
   {
     extraInit = (import ./environment-variables.sh);
-    shellAliases = { ca = "clear && "; # convenience
+    shellAliases = { ca = "clear && "; 
+                     ec = "sudo nvim /etc/nixos"; # edit configuration
+                     gst = "git status --short";
                      sudo = "sudo "; # allows sudo'd commands to be aliases
                      tmux = "tmux -2"; # force 256 colors in tmux
-		     tmux-8color = "tmux"; # allow less colors for extraordinary circumstances
+                     tmux-8color = "tmux"; # allow less colors just in case
+                     ud = "sudo nix-channel --update"; # ud = update
+                     ug = "sudo nixos-rebuild switch"; # ug = upgrade
     };
     shellInit = (import ./environment-variables.sh);
   };

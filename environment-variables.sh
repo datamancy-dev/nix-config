@@ -4,8 +4,9 @@
 # variables, for example KEYTIMEOUT in zsh, should
 # go in shell-specific init files
 
-# directory location
-export LOCAL_CONFIG_DIR=/usr/local/etc
+# directory locations
+export LOCAL_CONFIG_DIR="/usr/local/etc"
+export CONF=$LOCAL_CONFIG_DIR #abbreviation
 export ZSHDIR=$LOCAL_CONFIG_DIR/zsh
 
 # compiler options
@@ -13,6 +14,7 @@ export CFLAGS="-Wall -Wextra -std=c11"
 export CXXFLAGS="-Wall -Wextra -std=c++14"
 
 # other
-EDITOR="nvim"
+export EDITOR="nvim"
+export PATH="$PATH:$HOME/.gem/ruby/*/bin"
 ''
 
