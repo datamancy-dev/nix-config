@@ -4,10 +4,6 @@
 
 { config, pkgs, ... }:
 
-let myUserOptions = 
-{
-  hashedPassword = (import "/etc/nixos/password.txt");
-  extraGroups = ["wheel"]; isNormalUser   = true; }; in
 {
   nixpkgs.config = {
     # nonfree software isn't inherrintly evil...
@@ -27,7 +23,7 @@ let myUserOptions =
   # Use the grub boot loader.
   boot.loader = {
     efi.canTouchEfiVariables = true;
-    grub.device = /dev/sda5;
+    grub.device = /dev/sda1;
     systemd-boot.enable = true;
   };
   networking.networkmanager.enable = true;  # Enable the network manager
@@ -37,9 +33,7 @@ let myUserOptions =
     interactiveShellInit = "source $LOCAL_CONFIG_DIR/zsh/init.zsh";
   };
 
-  environment =
-  {
-    extraInit = (import ./environment-variables.sh);
+  environment = { extraInit = (import ./environment-variables.sh);
     shellAliases = { ca = "clear && "; 
                      ec = "sudo nvim /etc/nixos"; # edit configuration
                      gst = "git status --short";
@@ -58,8 +52,14 @@ let myUserOptions =
     xserver = {
       enable = true;
       layout = "us";
-      displayManager.gdm.enable = true; 
-      desktopManager.gnome3.enable = true;
+
+      # desktopManager.gnome.enable = true;
+      # displayManager.gdm.enable = true; 
+
+      # desktopManager.enlightenment.enable = true;
+
+      desktopManager.plasma5.enable = true;
+      # displayManager.kdm.enable = true;
     };
   };
 
@@ -80,21 +80,26 @@ let myUserOptions =
 
   services.xserver.videoDrivers = ["nvidia"];
 
-  users = {
-    extraGroups.hab = {};
+  users = let myUserOptions = 
+          {
+            hashedPassword = (import "/etc/nixos/password.txt");
+            extraGroups = ["wheel"]; isNormalUser   = true;
+          }; in
+    {
+      extraGroups.hab = {};
 
-    defaultUserShell = "/run/current-system/sw/bin/zsh";
-    mutableUsers     = false;
+      defaultUserShell = "/run/current-system/sw/bin/zsh";
+      mutableUsers     = false;
 
-    users = {
-      saffronsnail = myUserOptions;
+      users = {
+        saffronsnail = myUserOptions;
 
-      hab = {
-        extraGroups = ["hab"];
-        password="hab";
+        hab = {
+          extraGroups = ["hab"];
+          password="hab";
+        };
       };
     };
-  };
 
   # The NixOS release to be compatible with for stateful data such as databases.
   system.stateVersion = "16.03";
