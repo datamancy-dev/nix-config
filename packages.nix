@@ -10,20 +10,22 @@ let neovim = pkgs.neovim.override {
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
+    p7zip
     autoconf
     automake
     baobab
     cargo
-    # chromium
+    chromium
     clang
     clojure
     cmake
     cppunit
     ctags
+    deluge
     erlang
     evince
     firefox
-    gazebo
+    # gazeboSimulator.gazebo7
     gcc
     gdb
     gimp
@@ -35,6 +37,7 @@ let neovim = pkgs.neovim.override {
     gnupg1compat
     gtest
     guile
+    gvfs # required for evince to remember the page that the pdf is 'open' to
     htop
     keepassx
     leiningen
@@ -61,6 +64,7 @@ let neovim = pkgs.neovim.override {
     terminator
     tmux
     unzip
+    valgrind
     vim
     wget
     wpa_supplicant
