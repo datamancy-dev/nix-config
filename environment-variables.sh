@@ -5,8 +5,10 @@
 # go in shell-specific init files
 
 # directory locations
-export LOCAL_CONFIG_DIR="/usr/local/etc"
-export CONF=$LOCAL_CONFIG_DIR #abbreviation
+export LOCAL_CONFIG_DIR="/etc/nixos/etc"
+export CONF=$LOCAL_CONFIG_DIR # abbreviation
+export XDG_CONFIG_DIRS="$LOCAL_CONFIG_DIR:$XDG_CONFIG_DIRS"
+
 export ZSHDIR=$LOCAL_CONFIG_DIR/zsh
 
 # compiler options
@@ -15,6 +17,6 @@ export CXXFLAGS="-Wall -Wextra -std=c++14"
 
 # other
 export EDITOR="nvim"
-export PATH="$PATH:$HOME/.gem/ruby/*/bin"
+export PATH="$PATH:$HOME/.gem/ruby/2.3.0/bin"
 ''
 
