@@ -80,26 +80,26 @@
 
   services.xserver.videoDrivers = ["nvidia"];
 
-  users = let myUserOptions = 
-          {
-            hashedPassword = (import "/etc/nixos/password.txt");
-            extraGroups = ["wheel"]; isNormalUser   = true;
-          }; in
-    {
-      extraGroups.hab = {};
+  users = {
+    extraGroups.hab = {};
 
-      defaultUserShell = "/run/current-system/sw/bin/zsh";
-      mutableUsers     = false;
+    defaultUserShell = "/run/current-system/sw/bin/zsh";
+    mutableUsers     = false;
 
-      users = {
-        saffronsnail = myUserOptions;
+    users = {
+      saffronsnail =
+      {
+        hashedPassword = (import "/etc/nixos/password.txt");
+        extraGroups    = ["wheel"];
+        isNormalUser   = true;
+      };
 
-        hab = {
-          extraGroups = ["hab"];
-          password="hab";
-        };
+      hab = {
+        extraGroups = ["hab"];
+        password="hab";
       };
     };
+  };
 
   # The NixOS release to be compatible with for stateful data such as databases.
   system.stateVersion = "16.03";
