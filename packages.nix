@@ -50,11 +50,12 @@ let neovim = pkgs.neovim.override {
     ncurses
     neovim
     nix-repl
+    nixops
     nox
     npm2nix
     pavucontrol
     pciutils
-    # qt5.qtbase
+    qpdfview
     qt5Full
     qtcreator
     ruby
