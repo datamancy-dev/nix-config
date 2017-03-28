@@ -1,24 +1,11 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  nixpkgs.config = {
-    # nonfree software isn't inherrintly evil...
-    allowUnfree = true;
+  # The NixOS release to be compatible with for stateful data such as databases.
+  system.stateVersion = "17.03";
 
-    chromium = {
-      enablePepperFlash = true;
-      enablePepperPDF   = true;
-    };
-
-    firefox = {
-      enableGoogleTalkPlugin = true;
-      enableAdobeFlash       = true;
-    };
-  };
+  # nonfree software isn't inherrintly evil...
+  nixpkgs.config.allowUnfree = true;
 
   # Use the grub boot loader.
   boot.loader = {
@@ -28,49 +15,14 @@
   };
   networking.networkmanager.enable = true;  # Enable the network manager
 
-  programs.zsh = {
-    enable = true;
-    interactiveShellInit = "source $LOCAL_CONFIG_DIR/zsh/init.zsh";
-  };
+  environment.systemPackages = with pkgs; [
+    keepassx
+    pavucontrol
+    steam
+  ];
 
-  environment = { extraInit = (import ./environment-variables.sh);
-    shellAliases = { ca = "clear && "; 
-                     ec = "sudo nvim /etc/nixos"; # edit configuration
-                     gst = "git status --short";
-                     sudo = "sudo "; # allows sudo'd commands to be aliases
-                     tmux = "tmux -2"; # force 256 colors in tmux
-                     tmux-8color = "tmux"; # allow less colors just in case
-                     ud = "sudo nix-channel --update"; # ud = update
-                     ug = "sudo nixos-rebuild switch"; # ug = upgrade
-    };
-    shellInit = (import ./environment-variables.sh);
-  };
-
-  services = {
-    # openssh.enable = true;
-
-    xserver = {
-      enable = true;
-      layout = "us";
-
-      # desktopManager.gnome.enable = true;
-      # displayManager.gdm.enable = true; 
-
-      # desktopManager.enlightenment.enable = true;
-
-      desktopManager.plasma5.enable = true;
-      # displayManager.kdm.enable = true;
-    };
-  };
-
-  time.timeZone = "America/Vancouver";
-
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # the package list is long enough to justify putting it in a separate file
-      ./packages.nix
-    ];
+  networking.firewall.allowedTCPPorts = [ 27036 27037 ];
+  networking.firewall.allowedUDPPorts = [ 27031 27036 ];
 
   hardware = {
     pulseaudio.enable = true;
@@ -78,30 +30,23 @@
     opengl.driSupport32Bit = true;
   };
 
+  services.openssh.enable = true;
   services.xserver.videoDrivers = ["nvidia"];
+  time.timeZone = "America/Vancouver";
 
-  users = {
-    extraGroups.hab = {};
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
 
-    defaultUserShell = "/run/current-system/sw/bin/zsh";
-    mutableUsers     = false;
-
-    users = {
-      saffronsnail =
-      {
-        hashedPassword = (import "/etc/nixos/password.txt");
-        extraGroups    = ["wheel"];
-        isNormalUser   = true;
-      };
-
-      hab = {
-        extraGroups = ["hab"];
-        password="hab";
-      };
-    };
-  };
-
-  # The NixOS release to be compatible with for stateful data such as databases.
-  system.stateVersion = "16.03";
+      ./modules/administration.nix
+      ./modules/development.nix
+      ./modules/editor.nix
+      ./modules/images.nix
+      ./modules/office.nix
+      ./modules/terminal.nix
+      ./modules/users.nix
+      ./modules/web.nix
+      ./modules/x.nix
+    ];
 }
 
