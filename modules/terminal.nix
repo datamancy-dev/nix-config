@@ -34,20 +34,19 @@
     interactiveShellInit = "source $USER_CONFIG/zsh/init.zsh";
   };
 
-  environment.systemPackages = [
-    pkgs.gnupg1compat
-    pkgs.ncurses
-    pkgs.nix-repl
-    pkgs.nox
-    pkgs.p7zip
-    pkgs.terminator
-    pkgs.tmux
-    pkgs.unzip
-    pkgs.vim
-    pkgs.wget
-    pkgs.wpa_supplicant
-    pkgs.zip
-    pkgs.zsh
+  environment.systemPackages = with pkgs; [
+    gnupg1compat
+    ncurses
+    nix-repl
+    nox
+    p7zip
+    terminator
+    tmux
+    unzip
+    wget
+    wpa_supplicant
+    zip
+    zsh
   ];
 }
 
