@@ -3,8 +3,10 @@
 {
   environment = {
     shellAliases = {
-      ec = "sudo nvim /etc/nixos"; # ec = edit configuration
-      ed = "nvim $HOME/.human-config";
+      ds = "nix-shell --command zs";   # ds = development shell
+      ec = "sudo nvim /etc/nixos";     # ec = edit configuration
+      ed = "nvim $HOME/.human-config"; # ed = edit (user config) directory
+      cg = "nix-store --optimize && nix-collect-garbage";         # cg = collect garbage
       ud = "sudo nix-channel --update";   # ud = update
       ug = "sudo nixos-rebuild switch";   # ug = upgrade
 

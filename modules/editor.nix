@@ -81,13 +81,23 @@ let neovim = pkgs.neovim.override {
       # { name = "YouCompleteMe"; }
     ];
   };
-  vimAlias = true;
+
+  # neovim is not compatible with vimgolf
+  vimAlias = false;
 }; in
 {
-  environment.systemPackages = with pkgs; [
-    neovim
-    python27Packages.neovim
-    python35Packages.neovim
-  ];
+  environment = {
+      systemPackages = with pkgs; [
+      neovim
+      python27Packages.neovim
+      python35Packages.neovim
+      # neovim is not compatible with vimgolf
+      vim
+    ];
+
+    variables = {
+      EDITOR="nvim";
+    };
+  };
 }
 

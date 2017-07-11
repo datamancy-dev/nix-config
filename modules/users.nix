@@ -11,7 +11,13 @@
       saffronsnail =
       {
         hashedPassword = (import ../passwords/saffronsnail.txt);
-        extraGroups    = ["wheel"];
+        extraGroups    = ["vboxusers" "wheel"];
+        isNormalUser   = true;
+      };
+
+      smakems =
+      {
+        hashedPassword = (import ../passwords/smakems.txt);
         isNormalUser   = true;
       };
 
