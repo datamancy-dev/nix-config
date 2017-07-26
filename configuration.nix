@@ -2,8 +2,11 @@
 
 {
   # The NixOS release to be compatible with for stateful data such as databases.
-  system.stateVersion = "17.03"; # save a copy of the configuration just in case
+  system.stateVersion = "17.03";
+
+  # save a copy of the configuration just in case
   system.copySystemConfiguration = true;
+
   # nonfree software isn't inherrintly evil...
   nixpkgs.config.allowUnfree = true;
 
