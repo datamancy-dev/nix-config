@@ -6,7 +6,7 @@
       ds = "nix-shell --command zs";   # ds = development shell
       ec = "sudo nvim /etc/nixos";     # ec = edit configuration
       ed = "nvim $HOME/.human-config"; # ed = edit (user config) directory
-      cg = "nix-store --optimize && nix-collect-garbage";         # cg = collect garbage
+      cg = "nix-store --optimize && nix-collect-garbage --delete-older-than 7d"; # cg = collect garbage
       ud = "sudo nix-channel --update";   # ud = update
       ug = "sudo nixos-rebuild switch";   # ug = upgrade
 
