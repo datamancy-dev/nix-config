@@ -14,9 +14,15 @@
   boot.loader = {
     efi.canTouchEfiVariables = true;
     grub.device = /dev/sda1;
+    grub.extraEntries = ''
+      menuentry "Windows 10" {
+        chainloader(hd0,3)+1
+      }
+    '';
     systemd-boot.enable = true;
   };
   networking.networkmanager.enable = true;  # Enable the network manager
+  # networking.nameservers = [ "208.76.142.1" "208.76.152.9" "66.235.59.7"];
 
   environment.systemPackages = with pkgs; [
     baobab
@@ -26,9 +32,11 @@
     pypi2nix
     quiterss
     steam
+    texlive.combined.scheme-full
     thunderbird
     xflux-gui
     vscode
+    xboxdrv
   ];
 
   networking.firewall.allowedTCPPorts = [ 27036 27037 ];
@@ -49,7 +57,6 @@
       ./modules/nvidia.nix
       ./modules/office.nix
       ./modules/terminal.nix
-      ./modules/unity3d.nix
       ./modules/users.nix
       ./modules/web.nix
       ./modules/x.nix
