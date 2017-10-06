@@ -2,9 +2,11 @@
 
 let neovim = pkgs.neovim.override {
   configure = {
-    customRC = ''set rtp +=$USER_CONFIG/neovim |
-                   source $USER_CONFIG/neovim/init.vim'';
+    customRC = ''source $USER_CONFIG/nvim/init.vim'';
     vam.pluginDictionaries = [
+      # enhanced regex from tpope
+      # FIXME { name = "vim-abolish"; }
+
       # enhanced status bar
       { name = "vim-airline"; }
 
@@ -14,12 +16,14 @@ let neovim = pkgs.neovim.override {
       # adds an operator for toggling commenting
       { name = "commentary"; }
 
+      # FIXME { name = "Conque-GDB"; }
+
       # search for files in project
       { name = "ctrlp"; }
 
       # code-completion that takes advantage of neovim's async abilities
       # if you want to use it disable YouCompleteMe
-      # { name = "deoplete.nvim"; }
+      # FIXME { name = "deoplete.nvim"; }
 
       # enhance c/c++ completion with Clang
       # FIXME { name = "deoplete-clang"; }
@@ -59,6 +63,9 @@ let neovim = pkgs.neovim.override {
       # enahanced tab completion; unfortunately incompatible with YouCompleteMe
       { name = "supertab"; }
 
+      # the most popular syntax checker, but is unaware of neovim (i.e. no async)
+      { name = "syntastic"; }
+
       # text objects for c/c++
       # FIXME { name = "vim-textobj-clang"; }
 
@@ -67,6 +74,8 @@ let neovim = pkgs.neovim.override {
 
       # eases user-defined text objects; dependency of vim-textobj-clang
       # FIXME { name = "vim-textobj-user"; }
+
+      # FIXME { name = "vim-textobj-clang"; }
 
       # use <C-{h,j,k,l,\}> to navigate panes (removes the <C-w> prefix)
       { name = "vim-tmux-navigator"; }

@@ -5,7 +5,7 @@
     gnome3.gnome-calculator
     gnucash
     libreoffice
-    qpdfview
+    okular
   ];
 }
 

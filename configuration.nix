@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   # The NixOS release to be compatible with for stateful data such as databases.
@@ -20,22 +20,20 @@
       }
     '';
     systemd-boot.enable = true;
+
   };
   networking.networkmanager.enable = true;  # Enable the network manager
   # networking.nameservers = [ "208.76.142.1" "208.76.152.9" "66.235.59.7"];
 
   environment.systemPackages = with pkgs; [
     baobab
+    exfat
+    git
     keepassx
-    playonlinux
-    pencil
-    pypi2nix
     quiterss
     steam
     texlive.combined.scheme-full
     thunderbird
-    xflux-gui
-    vscode
     xboxdrv
   ];
 
@@ -51,15 +49,16 @@
 
       ./modules/administration.nix
       ./modules/audio.nix
-      ./modules/development.nix
+      # I use guix for development tools now ./modules/development.nix
       ./modules/editor.nix
       ./modules/images.nix
-      ./modules/nvidia.nix
+      # This is broken (see issue 29946) ./modules/nvidia.nix
       ./modules/office.nix
       ./modules/terminal.nix
       ./modules/users.nix
       ./modules/web.nix
       ./modules/x.nix
     ];
+  boot.postBootCommands =  "/var/guix/profiles/per-user/root/guix-profile/bin/guix-daemon --build-users-group=${config.users.users.guixbuilder01.group} &";
 }
 
